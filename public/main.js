@@ -95,7 +95,15 @@ var SpacebookApp = function () {
   }
 
 
-  var deleteComment = function (postIndex, commentIndex) {
+  var deleteComment = function (postID, postIndex, commentID, commentIndex) {
+    $.ajax({
+      type: "DELETE",
+      url: "/posts/" + postID + "/comments/" + commentID,
+      success: function (data) {
+        console.log(data);
+        fetch();
+      }
+    })
     posts[postIndex].comments.splice(commentIndex, 1);
     _renderComments(postIndex);
   };
@@ -145,7 +153,6 @@ $posts.on('click', '.add-comment', function () {
     return;
   }
   
-  var id = $(this).closest('.comments-container').closest('.post').data().id
   var id = $(this).closest('.post').data().id
 
   var postIndex = $(this).closest('.post').index();
@@ -164,7 +171,10 @@ $posts.on('click', '.add-comment', function () {
 $posts.on('click', '.remove-comment', function () {
   var $commentsList = $(this).closest('.post').find('.comments-list');
   var postIndex = $(this).closest('.post').index();
+  var postID = $(this).closest('.post').data().id;
   var commentIndex = $(this).closest('.comment').index();
+  var commentID =$(this).closest('.comment').data().id;
 
-  app.deleteComment(postIndex, commentIndex);
+// här nedan i parantesen ska postid och commentid in när funktionen
+  app.deleteComment(postID, postIndex, commentID, commentIndex);
 });

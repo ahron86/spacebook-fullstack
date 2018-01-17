@@ -69,7 +69,14 @@ app.post('/posts/:id/comments', function (req, res) {
     })
 })
 // 5) to handle deleting a comment from a post
+app.delete('/posts/:postID/comments/:commentID', function (req, res) {
+  Post.findByIdAndRemove(req.params.commentID, function (err, deleted) {
+    if (err) throw err;
 
+    console.log("comment deleted");
+    res.send(deleted);
+  })
+})
 
 
 app.listen(8000, function () {
